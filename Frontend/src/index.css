@@ -1,0 +1,220 @@
+:root {
+  --teal: #1B7A5E;
+  --teal-light: #2A9D73;
+  --teal-pale: #E8F5F0;
+  --orange: #E8A838;
+  --orange-pale: #FFF4E0;
+  --coral: #E8735A;
+  --green: #7FB069;
+  --cream: #F5EDD6;
+  --cream-dark: #EDE0C4;
+  --navy: #1E2D40;
+  --gray: #D1D5DB;
+  --gray-light: #F3F4F6;
+  --white: #FFFFFF;
+  --text: #1E2D40;
+  --text-light: #6B7280;
+  
+  --font-heading: 'Fredoka One', sans-serif;
+  --font-body: 'Nunito', sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--text);
+  background-color: var(--gray-light);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: inherit;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--gray-light);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gray);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-light);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Glassmorphism */
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* Utilities */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ═══ PRODUCT GRID ═══ */
+.grid-products {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 16px;
+}
+
+/* ═══ SCROLLBAR HIDE ═══ */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.cat-scroll::-webkit-scrollbar { display: none; }
+.cat-scroll { scrollbar-width: none; -ms-overflow-style: none; }
+
+/* ═══ PAGE WRAPPER ═══ */
+.page-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px 20px 60px;
+}
+
+/* ═══ PRODUCT DETAIL GRID ═══ */
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* ═══════════════════════════════════════ */
+/* ═══ TABLET — max 768px ═══ */
+/* ═══════════════════════════════════════ */
+@media (max-width: 768px) {
+  .grid-products {
+    grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+    gap: 12px;
+  }
+  .page-wrap {
+    padding: 16px 14px 80px;
+  }
+  .detail-grid {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+/* ═══════════════════════════════════════ */
+/* ═══ PHONE — max 480px ═══ */
+/* ═══════════════════════════════════════ */
+@media (max-width: 480px) {
+  .grid-products {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+  }
+
+  /* Landing */
+  .landing-features { grid-template-columns: repeat(2, 1fr) !important; }
+  .hero-img { max-width: 120px !important; }
+
+  /* Cards compact */
+  .card-pad { padding: 14px !important; border-radius: 18px !important; }
+  .track-timeline { padding: 16px 12px !important; border-radius: 18px !important; }
+
+  /* Action btns stack */
+  .action-btns { flex-direction: column !important; }
+  .action-btns a { width: 100% !important; }
+  .action-btns button { width: 100% !important; justify-content: center; }
+
+  /* Auth card padding */
+  .auth-card { padding: 24px 16px !important; border-radius: 24px !important; }
+
+  /* Profile avatar smaller */
+  .profile-avatar { width: 72px !important; height: 72px !important; }
+  .profile-avatar img { width: 72px !important; height: 72px !important; }
+  .profile-avatar span { font-size: 28px !important; }
+
+  /* Checkout total font shrink */
+  .checkout-total { font-size: 22px !important; }
+
+  /* Register passwords stack */
+  .pw-grid { grid-template-columns: 1fr !important; }
+
+  /* OrderTracking Larry section compact */
+  .larry-section { padding: 20px 14px !important; border-radius: 20px !important; }
+  .larry-section h3 { font-size: 18px !important; }
+  .larry-section p { font-size: 13px !important; }
+
+  /* Home hero banner compact */
+  .home-hero { padding: 16px !important; border-radius: 16px !important; margin-bottom: 20px !important; }
+  .home-hero h2 { font-size: 18px !important; }
+  .home-hero p { font-size: 12px !important; margin: 4px 0 12px !important; }
+  .home-hero button { padding: 8px 16px !important; font-size: 13px !important; }
+
+  /* Category cards compact */
+  .cat-card { padding: 10px !important; min-width: 70px !important; border-radius: 14px !important; }
+  .cat-card .cat-emoji { font-size: 22px !important; margin-bottom: 4px !important; height: 28px !important; }
+  .cat-card .cat-name { font-size: 11px !important; }
+  .cat-card .cat-count { font-size: 9px !important; }
+
+  /* Checkout section headers */
+  .card-pad h3 { font-size: 15px !important; }
+
+  /* Payment method items compact */
+  .pay-item { padding: 12px 14px !important; gap: 12px !important; border-radius: 12px !important; }
+  .pay-item .pay-label { font-size: 13px !important; }
+  .pay-item .pay-sub { font-size: 11px !important; }
+
+  /* ProductCard image height */
+  .product-card-img { height: 110px !important; }
+
+  /* Product detail image */
+  .detail-grid { gap: 16px !important; }
+
+  /* Page wrap tighter */
+  .page-wrap { padding: 12px 10px 60px !important; }
+
+  /* Checkout gap */
+  .checkout-grid { gap: 16px !important; }
+}
+
