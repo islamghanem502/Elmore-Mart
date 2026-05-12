@@ -14,12 +14,15 @@ export function CartProvider({ children }) {
     localStorage.setItem("elmore-cart", JSON.stringify(cart));
   }, [cart]);
 
+  const getPid = (p) => p?._id || p?.id;
+
   const addToCart = (product, quantity = 1) => {
+    const pid = getPid(product);
     setCart(prev => {
-      const existing = prev.find(item => item.id === product.id);
+      const existing = prev.find(item => getPid(item) === pid);
       if (existing) {
         return prev.map(item =>
-          item.id === product.id ? { ...item, qty: item.qty + quantity } : item
+          getPid(item) === pid ? { ...item, qty: item.qty + quantity } : item
         );
       }
       return [...prev, { ...product, qty: quantity }];
@@ -29,15 +32,15 @@ export function CartProvider({ children }) {
   };
 
   const removeFromCart = (id) => {
-    setCart(prev => prev.filter(item => item.id !== id));
+    setCart(prev => prev.filter(item => getPid(item) !== id));
   };
 
   const updateQuantity = (id, delta) => {
     setCart(prev => {
-      const item = prev.find(i => i.id === id);
+      const item = prev.find(i => getPid(i) === id);
       if (!item) return prev;
-      if (item.qty + delta <= 0) return prev.filter(i => i.id !== id);
-      return prev.map(i => i.id === id ? { ...i, qty: i.qty + delta } : i);
+      if (item.qty + delta <= 0) return prev.filter(i => getPid(i) !== id);
+      return prev.map(i => getPid(i) === id ? { ...i, qty: i.qty + delta } : i);
     });
   };
 
