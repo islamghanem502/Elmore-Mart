@@ -5,7 +5,7 @@ const Product = require('../models/Product');
 // @access  Public
 exports.getProducts = async (req, res) => {
   try {
-    const products = await Product.find({});
+    const products = await Product.find({}).populate('categoryId');
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -18,9 +18,7 @@ exports.getProducts = async (req, res) => {
 exports.getProductsByCategory = async (req, res) => {
   try {
     const { cat } = req.params;
-    const products = await Product.find({ 
-      category: { $regex: new RegExp(`^${cat.trim()}$`, 'i') } 
-    });
+    const products = await Product.find({ categoryId: cat }).populate('categoryId');
     res.json(products);
   } catch (error) {
     res.status(500).json({ message: error.message });
@@ -32,7 +30,7 @@ exports.getProductsByCategory = async (req, res) => {
 // @access  Public
 exports.getProductById = async (req, res) => {
   try {
-    const product = await Product.findById(req.params.id);
+    const product = await Product.findById(req.params.id).populate('categoryId');
     if (product) {
       res.json(product);
     } else {

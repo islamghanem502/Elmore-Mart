@@ -160,7 +160,7 @@ export default function Checkout() {
             </div>
             <div style={{ display: "grid", gap: 12, marginBottom: 20 }}>
               {cart.map((i) => {
-                const itemName = typeof i.name === 'object' ? i.name.en : i.name;
+                const itemName = i.name || "Item";
                 const itemId = i._id || i.id;
                 return (
                   <div key={itemId} style={{ display: "flex", justifyContent: "space-between", fontFamily: "'Nunito',sans-serif", fontSize: 15 }}>

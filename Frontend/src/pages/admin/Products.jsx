@@ -47,12 +47,10 @@ export default function ProductsAdmin() {
   });
 
   const filteredProducts = products.filter(p => {
-    const nameEn = p.name?.en || "";
-    const nameAr = p.name?.ar || "";
-    const cat = p.category || "";
-    return nameEn.toLowerCase().includes(searchTerm.toLowerCase()) || 
-           nameAr.includes(searchTerm) ||
-           cat.toLowerCase().includes(searchTerm.toLowerCase());
+    const name = p.name || "";
+    const catName = p.categoryId?.name || "";
+    return name.toLowerCase().includes(searchTerm.toLowerCase()) || 
+           catName.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
   const handleDelete = (id) => {
@@ -64,12 +62,10 @@ export default function ProductsAdmin() {
   const handleEdit = (product) => {
     setEditingProduct({
       id: product._id,
-      nameEn: product.name?.en || "",
-      nameAr: product.name?.ar || "",
-      descEn: product.description?.en || "",
-      descAr: product.description?.ar || "",
+      name: product.name || "",
+      desc: product.description || "",
       price: product.price || 0,
-      category: product.category || "",
+      categoryId: product.categoryId?._id || product.categoryId || "",
       image: product.image || "",
       stock: product.stock || 0,
       available: product.available ?? true,
@@ -79,12 +75,10 @@ export default function ProductsAdmin() {
 
   const handleAddNew = () => {
     setEditingProduct({
-      nameEn: "",
-      nameAr: "",
-      descEn: "",
-      descAr: "",
+      name: "",
+      desc: "",
       price: 0,
-      category: categories[0]?.name?.en || "General",
+      categoryId: categories[0]?._id || "",
       image: "",
       stock: 50,
       available: true,
@@ -95,10 +89,10 @@ export default function ProductsAdmin() {
   const handleSave = (e) => {
     e.preventDefault();
     const payload = {
-      name: { en: editingProduct.nameEn, ar: editingProduct.nameAr },
-      description: { en: editingProduct.descEn, ar: editingProduct.descAr },
+      name: editingProduct.name,
+      description: editingProduct.desc,
       price: editingProduct.price,
-      category: editingProduct.category,
+      categoryId: editingProduct.categoryId,
       image: editingProduct.image,
       stock: editingProduct.stock,
       available: editingProduct.available,
@@ -168,13 +162,12 @@ export default function ProductsAdmin() {
                         {p.image ? <img src={p.image} style={{ width: "100%", height: "100%", objectFit: "cover" }} /> : <ImageIcon size={20} color={COLORS.teal} />}
                       </div>
                       <div>
-                        <div style={{ fontWeight: 800, color: COLORS.text }}>{p.name?.en}</div>
-                        <div style={{ fontSize: 12, color: COLORS.textLight, direction: "rtl" }}>{p.name?.ar}</div>
+                        <div style={{ fontWeight: 800, color: COLORS.text }}>{p.name}</div>
                       </div>
                     </div>
                   </td>
                   <td style={{ padding: "16px" }}>
-                    <span style={{ background: COLORS.tealPale, color: COLORS.teal, padding: "4px 12px", borderRadius: 20, fontSize: 12, fontWeight: 800 }}>{p.category}</span>
+                    <span style={{ background: COLORS.tealPale, color: COLORS.teal, padding: "4px 12px", borderRadius: 20, fontSize: 12, fontWeight: 800 }}>{p.categoryId?.name || p.categoryId}</span>
                   </td>
                   <td style={{ padding: "16px", fontWeight: 800, color: COLORS.text }}>${p.price?.toFixed(2)}</td>
                   <td style={{ padding: "16px", color: COLORS.textLight, fontWeight: 600 }}>{p.stock}</td>
@@ -217,15 +210,9 @@ export default function ProductsAdmin() {
 
               <form onSubmit={handleSave} style={{ display: "grid", gap: 20 }}>
                 {/* Names */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-                  <div>
-                    <label style={{ display: "block", fontSize: 14, fontWeight: 800, marginBottom: 8 }}>Name (English)</label>
-                    <input required value={editingProduct.nameEn} onChange={e => setEditingProduct({ ...editingProduct, nameEn: e.target.value })} style={inputStyle} />
-                  </div>
-                  <div>
-                    <label style={{ display: "block", fontSize: 14, fontWeight: 800, marginBottom: 8, textAlign: "right" }}>الاسم (العربية)</label>
-                    <input required value={editingProduct.nameAr} onChange={e => setEditingProduct({ ...editingProduct, nameAr: e.target.value })} style={{ ...inputStyle, textAlign: "right" }} dir="rtl" />
-                  </div>
+                <div>
+                  <label style={{ display: "block", fontSize: 14, fontWeight: 800, marginBottom: 8 }}>Product Name</label>
+                  <input required value={editingProduct.name} onChange={e => setEditingProduct({ ...editingProduct, name: e.target.value })} style={inputStyle} />
                 </div>
 
                 {/* Price & Category */}
@@ -236,12 +223,12 @@ export default function ProductsAdmin() {
                   </div>
                   <div>
                     <label style={{ display: "block", fontSize: 14, fontWeight: 800, marginBottom: 8 }}>Category</label>
-                    <select value={editingProduct.category} onChange={e => setEditingProduct({ ...editingProduct, category: e.target.value })} style={inputStyle}>
+                    <select value={editingProduct.categoryId} onChange={e => setEditingProduct({ ...editingProduct, categoryId: e.target.value })} style={inputStyle}>
                       {categories.map(c => {
-                        const name = typeof c.name === 'object' ? c.name.en : c.name;
-                        return <option key={c._id || name} value={name}>{name}</option>;
+                        const name = c.name || "Category";
+                        return <option key={c._id} value={c._id}>{name}</option>;
                       })}
-                      {categories.length === 0 && <option value="General">General</option>}
+                      {categories.length === 0 && <option value="">No Categories</option>}
                     </select>
                   </div>
                 </div>
@@ -265,15 +252,9 @@ export default function ProductsAdmin() {
                 </div>
 
                 {/* Descriptions */}
-                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-                  <div>
-                    <label style={{ display: "block", fontSize: 14, fontWeight: 800, marginBottom: 8 }}>Description (EN)</label>
-                    <textarea rows="3" value={editingProduct.descEn} onChange={e => setEditingProduct({ ...editingProduct, descEn: e.target.value })} style={inputStyle} />
-                  </div>
-                  <div>
-                    <label style={{ display: "block", fontSize: 14, fontWeight: 800, marginBottom: 8, textAlign: "right" }}>الوصف (AR)</label>
-                    <textarea rows="3" value={editingProduct.descAr} onChange={e => setEditingProduct({ ...editingProduct, descAr: e.target.value })} style={{ ...inputStyle, textAlign: "right" }} dir="rtl" />
-                  </div>
+                <div>
+                  <label style={{ display: "block", fontSize: 14, fontWeight: 800, marginBottom: 8 }}>Description</label>
+                  <textarea rows="3" value={editingProduct.desc} onChange={e => setEditingProduct({ ...editingProduct, desc: e.target.value })} style={inputStyle} />
                 </div>
 
                 <button

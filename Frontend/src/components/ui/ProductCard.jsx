@@ -9,7 +9,7 @@ export default function ProductCard({ p }) {
   const [flash, setFlash] = useState(false);
   const { addToCart, cart, updateQuantity } = useCart();
 
-  const displayName = typeof p.name === 'object' ? p.name.en : p.name;
+  const displayName = p.name || "";
   const productId = p._id || p.id;
 
   // Find item in cart to show quantity
@@ -84,24 +84,28 @@ export default function ProductCard({ p }) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          fontSize: 52,
+          fontSize: 60,
           overflow: "hidden",
-          padding: p.image ? "10px" : 0,
+          padding: 0,
         }}>
-          {p.image ? (
-            <img
-              src={p.image}
-              alt={displayName}
-              style={{ width: "80%", height: "80%", objectFit: "contain" }}
-              onError={(e) => {
-                e.target.style.display = "none";
-                e.target.nextSibling.style.display = "block";
-              }}
-            />
-          ) : null}
-          <span style={{ display: p.image ? "none" : "block" }}>
-            {p.emoji || "📦"}
-          </span>
+          {p.image && p.image.startsWith('http') ? (
+            <>
+              <img
+                src={p.image}
+                alt={displayName}
+                style={{ width: "80%", height: "80%", objectFit: "contain" }}
+                onError={(e) => {
+                  e.target.style.display = "none";
+                  e.target.nextSibling.style.display = "flex";
+                }}
+              />
+              <span style={{ display: "none", alignItems: "center", justifyContent: "center", fontSize: 60 }}>
+                {p.emoji || "📦"}
+              </span>
+            </>
+          ) : (
+            <span>{p.image || p.emoji || "📦"}</span>
+          )}
         </div>
 
         <div style={{ padding: "12px 14px 14px", flex: 1, display: "flex", flexDirection: "column" }}>

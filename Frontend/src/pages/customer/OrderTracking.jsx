@@ -175,7 +175,7 @@ export default function OrderTracking() {
             </h4>
             {order.items.map((item, i) => (
               <div key={i} style={{ display: "flex", justifyContent: "space-between", fontFamily: "'Nunito',sans-serif", fontSize: 14, marginBottom: 8 }}>
-                <span style={{ color: COLORS.text, fontWeight: 700 }}>{item.qty}x {item.productId?.name?.en || "Item"}</span>
+                <span style={{ color: COLORS.text, fontWeight: 700 }}>{item.qty}x {item.productId?.name || "Item"}</span>
                 <span style={{ fontWeight: 800, color: COLORS.teal }}>${(item.price * item.qty).toFixed(2)}</span>
               </div>
             ))}

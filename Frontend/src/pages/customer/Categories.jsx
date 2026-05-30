@@ -13,6 +13,7 @@ export default function Categories() {
   const queryParams = new URLSearchParams(location.search);
   const initialCat = queryParams.get("cat") || "All";
   const [selectedCat, setSelectedCat] = useState(initialCat);
+  const [selectedCatId, setSelectedCatId] = useState("");
 
   useEffect(() => {
     setSelectedCat(queryParams.get("cat") || "All");
@@ -26,8 +27,8 @@ export default function Categories() {
 
   // Fetch Products (either All or by Category)
   const { data: dbProducts, isLoading: prodLoading, isFetching: prodFetching } = useQuery({
-    queryKey: ["products", selectedCat],
-    queryFn: () => selectedCat === "All" ? getProducts() : getProductsByCategory(selectedCat),
+    queryKey: ["products", selectedCatId],
+    queryFn: () => selectedCat === "All" ? getProducts() : getProductsByCategory(selectedCatId),
     keepPreviousData: true,
   });
 
@@ -67,7 +68,7 @@ export default function Categories() {
           }}
         >
           {categoriesWithAll.map((cat, i) => {
-            const catName = typeof cat.name === 'object' ? cat.name.en : cat.name;
+            const catName = cat.name || "Category";
             const isSelected = selectedCat === catName;
             const isImageUrl = cat.image?.startsWith('http');
 
@@ -77,7 +78,7 @@ export default function Categories() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: i * 0.05 }}
-                onClick={() => setSelectedCat(catName)}
+                onClick={() => { setSelectedCat(catName); setSelectedCatId(cat._id || ""); }}
                 style={{
                   background: isSelected ? COLORS.teal : COLORS.white,
                   color: isSelected ? COLORS.white : COLORS.text,

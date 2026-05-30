@@ -27,9 +27,9 @@ export default function ProductDetails() {
 
   // Fetch related products
   const { data: relatedProducts } = useQuery({
-    queryKey: ["related-products", product?.category],
-    queryFn: () => getProductsByCategory(product?.category),
-    enabled: !!product?.category,
+    queryKey: ["related-products", product?.categoryId?._id || product?.categoryId],
+    queryFn: () => getProductsByCategory(product?.categoryId?._id || product?.categoryId),
+    enabled: !!(product?.categoryId?._id || product?.categoryId),
   });
 
   const handleAdd = () => {
@@ -145,7 +145,7 @@ export default function ProductDetails() {
               fontFamily: "'Nunito',sans-serif",
               textTransform: "uppercase",
               letterSpacing: 0.5
-            }}>{product.category || product.cat}</span>
+            }}>{product.categoryId?.name || product.categoryId}</span>
 
             <h1 style={{
               fontFamily: "'Fredoka One',sans-serif",

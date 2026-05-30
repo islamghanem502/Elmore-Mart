@@ -37,10 +37,7 @@ mongoose.connect(process.env.MONGO_URI)
   const FIXED_CATEGORIES = require('./constants/categories');
   const count = await Category.countDocuments();
   if (count === 0) {
-    await Category.insertMany(FIXED_CATEGORIES.map(c => ({
-      name: c.name,
-      image: c.icon // Using emoji as placeholder icon
-    })));
+    await Category.insertMany(FIXED_CATEGORIES);
     console.log('📦 Categories seeded successfully!');
   }
 })

@@ -116,7 +116,7 @@ export default function CartDrawer() {
                 </div>
               ) : (
                 cart.map(item => {
-                  const itemName = typeof item.name === 'object' ? item.name.en : item.name;
+                  const itemName = item.name || "Item";
                   const itemId = item._id || item.id;
                   const isImageUrl = item.image?.startsWith('http');
 

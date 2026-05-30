@@ -13,6 +13,7 @@ import { Loader, Truck, ChevronRight } from "lucide-react";
 export default function Home() {
   const { user } = useAuth();
   const [selectedCat, setSelectedCat] = useState("All");
+  const [selectedCatId, setSelectedCatId] = useState("All");
   const [visibleCount, setVisibleCount] = useState(8);
 
   // Fetch real categories
@@ -34,23 +35,24 @@ export default function Home() {
   const categories = [{ _id: "all", name: "All", emoji: "🛍️" }, ...categoriesList];
 
   // Calculate product counts per category
-  const getCount = (catName) => {
+  const getCount = (catName, catId) => {
     if (catName === "All") return products.length;
-    return products.filter(p => p.category === catName).length;
+    return products.filter(p => p.categoryId === catId || p.categoryId?._id === catId).length;
   };
 
   // Filter products based on selection
   const filteredProducts = selectedCat === "All"
     ? products
-    : products.filter(p => p.category === selectedCat);
+    : products.filter(p => p.categoryId === selectedCatId || p.categoryId?._id === selectedCatId);
 
   // Slice visible products for "Show More"
   const visibleProducts = filteredProducts.slice(0, visibleCount);
   const hasMore = visibleCount < filteredProducts.length;
 
   // Reset visible count when category changes
-  const handleCatSelect = (catName) => {
+  const handleCatSelect = (catName, catId) => {
     setSelectedCat(catName);
+    setSelectedCatId(catId);
     setVisibleCount(8);
   };
 
@@ -190,10 +192,10 @@ export default function Home() {
           }}
         >
           {categories.map((cat, i) => {
-            const catName = typeof cat.name === 'object' ? cat.name.en : cat.name;
+            const catName = cat.name || "Category";
             const isImageUrl = cat.image?.startsWith('http');
             const isSelected = selectedCat === catName;
-            const itemCount = getCount(catName);
+            const itemCount = getCount(catName, cat._id);
 
             return (
               <motion.div
@@ -202,7 +204,7 @@ export default function Home() {
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: i * 0.05 }}
                 whileHover={{ y: -5, boxShadow: "0 6px 16px rgba(0,0,0,.1)" }}
-                onClick={() => handleCatSelect(catName)}
+                onClick={() => handleCatSelect(catName, cat._id)}
                 style={{
                   background: isSelected ? COLORS.teal : COLORS.white,
                   borderRadius: 20,
@@ -225,21 +227,22 @@ export default function Home() {
                   )}
                 </div>
                 <div className="cat-name" style={{
-                  fontSize: 13,
-                  fontWeight: 800,
-                  fontFamily: "'Nunito',sans-serif",
+                  fontSize: 14,
+                  fontWeight: 700,
+                  fontFamily: "'Cairo', 'Nunito', sans-serif",
                   color: isSelected ? "white" : COLORS.text,
-                  lineHeight: 1.2
+                  lineHeight: 1.3,
+                  marginTop: 4
                 }}>
-                  {catName.split(" ")[0]}
+                  {catName}
                 </div>
                 <div className="cat-count" style={{
-                  fontSize: 10,
+                  fontSize: 11,
                   color: isSelected ? "rgba(255,255,255,0.8)" : COLORS.textLight,
-                  fontFamily: "'Nunito',sans-serif",
-                  fontWeight: 700
+                  fontFamily: "'Cairo', 'Nunito', sans-serif",
+                  fontWeight: 600
                 }}>
-                  {itemCount} Items
+                  {itemCount} العناصر
                 </div>
               </motion.div>
             );

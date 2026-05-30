@@ -33,8 +33,8 @@ export default function CategoriesAdmin() {
 
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 20 }}>
           {categories.map((cat, i) => {
-            const nameEn = typeof cat.name === 'object' ? cat.name.en : "Category";
-            const nameAr = typeof cat.name === 'object' ? cat.name.ar : "";
+            const name = cat.name || "Category";
+            const slug = cat.slug || "";
             
             return (
               <motion.div 
@@ -57,8 +57,8 @@ export default function CategoriesAdmin() {
                 </div>
                 
                 <div style={{ flex: 1 }}>
-                  <div style={{ fontWeight: 800, fontSize: 18, color: COLORS.text, fontFamily: "'Nunito',sans-serif" }}>{nameEn}</div>
-                  <div style={{ color: COLORS.textLight, fontSize: 13, direction: "rtl", textAlign: "right" }}>{nameAr}</div>
+                  <div style={{ fontWeight: 800, fontSize: 18, color: COLORS.text, fontFamily: "'Nunito',sans-serif" }}>{name}</div>
+                  <div style={{ color: COLORS.textLight, fontSize: 13, textAlign: "left" }}>Slug: {slug}</div>
                 </div>
               </motion.div>
             );
