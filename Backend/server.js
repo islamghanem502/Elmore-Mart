@@ -20,12 +20,14 @@ const authRoutes = require('./routes/auth');
 const productRoutes = require('./routes/products');
 const orderRoutes = require('./routes/orders');
 const categoryRoutes = require('./routes/categories');
+const chatRoutes = require('./routes/chat');
 
 // Route Middlewares
 app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/categories', categoryRoutes);
+app.use('/api/chat', chatRoutes);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)

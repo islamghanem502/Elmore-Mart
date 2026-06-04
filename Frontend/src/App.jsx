@@ -5,6 +5,7 @@ import AuthGuard from "./components/AuthGuard";
 import AdminGuard from "./components/AdminGuard";
 import Navbar from "./components/layout/Navbar";
 import CartDrawer from "./components/layout/CartDrawer";
+import ChatBot from "./components/ui/ChatBot";
 
 // Customer Pages
 import Landing from "./pages/customer/Landing";
@@ -87,6 +88,7 @@ function AppContent() {
       </div>
 
       {!isLandingPage && !isAdminPage && !isAuthPage && <CartDrawer />}
+      {!isLandingPage && !isAdminPage && !isAuthPage && <ChatBot />}
     </div>
   );
 }
